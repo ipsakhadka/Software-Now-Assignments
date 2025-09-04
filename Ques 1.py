@@ -23,24 +23,62 @@ def encrypt_character(char, shift1, shift2):
     """
     if char.islower():
         if char in string.ascii_lowercase[:13]: #first half from a to m
-            return chr((ord(char) - ord('a') + shift1 * shift2) % 26 + ord('a')), 1 #Rule 1: shift=(shift1*shift2)
-            # % 26 ensures the letter stays within the range of 26 letters.
+            #Rule 1: shift forward & shift=(shift1*shift2)
+            shift_amount = shift1 * shift2
+
+            initial_position = ord(char) - ord("a")
+            #ord() helps convert to ASCII
+            #here ord(char)-ord('a') is used to get the position of the alphabet. 
+            #eg: if the char is "a" then the computation is 97-97 = 0, if "b" 98-97 = 1 ..
+
+            shifted_position = (initial_position + shift_amount) % 26
+            # % 26 to ensure that letters stay within the range of 26 (atoz)
+            shifted_char = chr(shifted_position + ord('a')) #adding ord("a") to convert back to letter
+            return shifted_char, 1
+            #1 here implies that rule 1 was applied
+
+    
         else:  # second half from n-z
-            return chr((ord(char) - ord('a') - (shift1 + shift2)) % 26 + ord('a')), 2 #Rule 2: shift=(shift1+shift2)
+            #Rule 2 is shift backward & shift1 + shift2
+            shift_amount = shift1 +shift2
+            initial_position = ord(char) - ord('a')
+            shifted_position = (initial_position - shift_amount) % 26
+            shifted_char = chr (shifted_position + ord("a"))
+            return shifted_char, 2
+
+            #using - since it's backward (other explanation in IF clause)
+            
             
     elif char.isupper():
        if char in string.ascii_uppercase[:13]: #first half of uppercase from A to M
-            return chr((ord(char) - ord('A') - shift1) % 26 + ord('A')), 3 #Rule 3 #Rule 3: shift= -shift1
+            #Rule 3: shift= -shift1 & backward
+            shift_amount = shift1
+            initial_position = ord(char) - ord('A')
+            shifted_position = (initial_position - shift_amount) % 26
+            shifted_char = chr (shifted_position + ord("A"))
+            return shifted_char, 3
        else: #second half of uppercase N-Z
-            return chr((ord(char) - ord('A') + shift2 ** 2) % 26 + ord('A')), 4 #Rule 4: shift= shift2^2
-           
+            #Rule 4: shift2^2 & forward
+            shift_amount = shift2 ** 2
+            initial_position = ord(char) - ord('A')
+            shifted_position = (initial_position + shift_amount) % 26
+            shifted_char = chr (shifted_position + ord("A"))
+            return shifted_char, 4
+
+                
     else:
         return char, 0  # unchanged for spaces, punctuation, numbers
 
 def decrypt_character(char, shift1, shift2, rule):
     """
-    Decrypt a single character using the exact encryption rule applied.
+    Decrypting characters flipping the encryption rule. 
+    Rule 1: char was shifted forward by (shift1 * shift2), so now we shift backward by same amount.
+    Rule 2: backward by (shift1 + shift2), forward by same.
+    Rule 3: backward by shift1, forward by shift1.
+    Rule 4: forward by (shift2 ** 2), backward by same.
     """
+
+    #compacting the rules in single line since it's clear from above
     if rule == 1: 
         return chr((ord(char) - ord('a') - shift1 * shift2) % 26 + ord('a'))
     elif rule == 2:
@@ -52,8 +90,10 @@ def decrypt_character(char, shift1, shift2, rule):
     else:
         return char  # unchanged for spaces, punctuation, numbers.
 
-def encrypt_file(input_file, encrypted_file, rule_map_file, shift1, shift2):#Encrypt the full text file and save the encryption rules used for each character.
-    
+
+
+#Encrypt the full text file and save the encryption rules used for each character.
+def encrypt_file(input_file, encrypted_file, rule_map_file, shift1, shift2):
     with open(input_file, "r", encoding="utf-8") as f: #reading orginal file using utf-8.
         #utf 8 is used to correctly read and write all characters including special symbols.
         original_text = f.read()
@@ -101,7 +141,7 @@ def main():
     print("Hello. Warm Greeting! \n")
     print("Welcome to the Text Encryption and Decryption!\n \n")
     shift1= get_user_input("Please insert a shift1:")
-    shift2 =get_user_input("Enter insert a shift2:")
+    shift2 =get_user_input("Please insert a shift2:")
 
     encrypt_file("raw_text.txt", "encrypted_text.txt", "rule_map.txt", shift1, shift2) #Encrypting the file
     decrypt_file("encrypted_text.txt", "rule_map.txt", "decrypted_text.txt", shift1, shift2) #Decrypting the file
