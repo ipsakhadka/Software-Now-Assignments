@@ -21,7 +21,7 @@ def draw_edge(pen, length, depth):
         # Draw the first third part (which is straight)
         draw_edge(pen, part, depth - 1)
 
-        # Draw the inward dent ( or an equilateral triangle pointing inside)
+        # Draw the inward dent (or an equilateral triangle pointing inside)
         pen.right(300)                       
         draw_edge(pen, part, depth - 1)       
         pen.left(240)                       
@@ -43,7 +43,7 @@ def draw_shape(pen, sides, length, depth):
     :depth -> recursion depth
     """
     
-    angle = 360 / sides            # yesley just exterior angle of the polygon set garxa
+    angle = 360 / sides            # it will set the exterior angle of the polygon set
 
     # Calculate radius of circumscribed circle so shape is centered
     radius = length / (2 * math.sin(math.pi / sides))
