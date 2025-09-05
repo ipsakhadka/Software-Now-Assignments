@@ -52,6 +52,8 @@ def draw_shape(pen, sides, length, depth):
     pen.penup()                    # Lift pen so no line is drawn
     pen.goto(0, -radius)           # Go to bottom of polygon
     pen.setheading(0)              # Face right
+    pen.forward(length / 2)        # Go Forward
+    pen.left(180 - (180 * (sides - 2) / (2 * sides)))  # orient correctly
     pen.pendown()                  # Put pen down to start drawing
 
     # Draw each side of the polygon 
@@ -62,8 +64,10 @@ def draw_shape(pen, sides, length, depth):
 
 def main():
     # Ask user if they want to start the program
-    start = input("This program will draw a geometric pattern using Python's turtle graphics. Do you want to start? (yes/no): ").strip().lower()
-    if start != "yes":              
+    start = input("This program will draw a geometric pattern using Python's turtle graphics. " \
+    "Do you want to start? (yes/no): ").strip().lower()
+
+    if start not in ("yes", "y"):              
         print("Program stopped.")
         return
     
@@ -91,11 +95,11 @@ def main():
 
 
         # # Ask user if they want to build another polygon
-        # again = input("Do you want to build another polygon? (yes/no): ").strip().lower()
-        # if again != "yes":                
-        #     print("Exiting program. Goodbye!")
-        #     break                         
-
+                               
+        to_cont = input("\nDo you want to draw another polygon? (yes/no): ").strip().lower()
+        if to_cont not in ("y", "yes"):
+            print("Exiting program. Goodbye!")
+            break
 
 
 if __name__ == "__main__":
