@@ -138,3 +138,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# References
+
+# Andrews, R. (2020, August 19). Python Recursion - Fun with Fractals. Codementor.io; Codementor. https://www.codementor.io/@info658/python-recursion-fun-with-fractals-19ha74wokh
+
+# GeeksforGeeks. (2020, February 6). Draw any polygon in Turtle Python. GeeksforGeeks. https://www.geeksforgeeks.org/python/draw-any-polygon-in-turtle-python/
+
+# Geilli, K. (2025). Complete Python Turtle Graphics Overview! (From Beginner to Advanced). Youtu.be. https://youtu.be/pxKu2pQ7ILo
