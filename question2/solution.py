@@ -152,3 +152,54 @@ save_temperature_ranges(station_largest_ranges)
 
 '''
 
+#Now we will proceed to finding temperature stability
+
+def temperature_stability(df):
+    
+    station_std={}                                          #to store station standard deviation
+
+    for station in df['STATION_NAME'].unique():
+        data=df[df['STATION_NAME']==station]
+
+        temperatures=[]                                                     #to store temperatures for a station
+
+        for column in df.columns:
+            if column not in ['STATION_NAME', 'STN_ID', 'LAT', 'LON']:
+                month_temperatures=data[column].dropna().values             #accessing temperature for the month
+                temperatures.extend(month_temperatures)
+
+                temperature_pd_series=pd.series(temperatures)
+                standard_dev=temperature_pd_series.std()                        #using pd function to calculate standard deviation
+
+                station_std[station]=standard_dev                                  #storing standard deviation for a station
+
+     #Now we will be finding the largest and smallest standard deviation
+                
+    min_standard_dev=min(station_std.values())                      #smallest using the min function - these are the most stable
+
+    max_standard_dev=max(station_std.values())                      #largest using the max function - these are the most variable 
+
+    #Now we have to find out all stations which are most stable and most variable
+
+    most_stable_stations=[]                 #to store most stable
+
+    for station, standard_dev in station_std.items():
+        if standard_dev==min_standard_dev:
+            most_stable_stations.append((station,standard_dev))
+
+    most_variable_stations=[]               #to store most variable
+    for station, standard_dev in station_std.items():
+        if station_dev==max_standard_dev:
+            most_variable_stations.appebd(station,standard_dev)
+
+    return most_stable_stations, most_variable_stations
+
+
+
+
+
+
+
+
+
+
