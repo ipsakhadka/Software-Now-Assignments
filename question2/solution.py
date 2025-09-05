@@ -5,8 +5,9 @@ import pandas as pd
 import numpy as np
 
 
-'''Now, we will create a function to combine all csv files and create a dataframe
-  There is information about 20 different years in 20 separate csv files. We will merge all those csvs in a single dataframe.
+'''
+Now, we will create a function to combine all csv files and create a dataframe
+There is information about 20 different years in 20 separate csv files. We will merge all those csvs in a single dataframe.
 We will use the glob module which makes it easy to find all the pathnames matching a specified pattern, in this case, .csv .
 '''
 
@@ -152,3 +153,97 @@ save_temperature_ranges(station_largest_ranges)
 
 '''
 
+#Now we will proceed to finding temperature stability
+
+def temperature_stability(df):
+    
+    station_std={}                                          #to store station standard deviation
+
+    for station in df['STATION_NAME'].unique():
+        data=df[df['STATION_NAME']==station]
+
+        temperatures=[]                                                     #to store temperatures for a station
+
+        for column in df.columns:
+            if column not in ['STATION_NAME', 'STN_ID', 'LAT', 'LON']:
+                month_temperatures=data[column].dropna().values             #accessing temperature for the month
+                temperatures.extend(month_temperatures)
+
+                temperature_pd_series=pd.Series(temperatures)
+                standard_dev=temperature_pd_series.std()                        #using pd function to calculate standard deviation
+
+                station_std[station]=standard_dev                                  #storing standard deviation for a station
+
+     #Now we will be finding the largest and smallest standard deviation
+                
+    min_standard_dev=min(station_std.values())                                       #smallest using the min function - these are the most stable
+
+    max_standard_dev=max(station_std.values())                                       #largest using the max function - these are the most variable 
+
+    #Now we have to find out all stations which are most stable and most variable
+
+    most_stable_stations=[]                                                       #to store most stable
+
+    for station, standard_dev in station_std.items():
+        if standard_dev==min_standard_dev:
+            most_stable_stations.append((station,standard_dev))
+
+    most_variable_stations=[]                                                    #to store most variable
+    for station, standard_dev in station_std.items():
+        if standard_dev==max_standard_dev:
+            most_variable_stations.append((station,standard_dev))
+
+    return most_stable_stations, most_variable_stations
+
+
+#Now we need to save the results to a file
+
+def save_temperature_stability(most_stable, most_variable, filename='question2_results/temperature_stability_stations.txt'):
+
+    with open(filename, 'w') as file:           
+        for station, standard_dev in most_stable:                                                    #writing most stable to file
+            file.write(f"Most Stable: Station {station}: StdDev {standard_dev:.1f}°C\n")    
+
+        
+        for station, standard_dev in most_variable:                                                      #writing most variable to file
+            file.write(f"Most Variable: Station {station}: StdDev {standard_dev:.1f}°C\n")
+
+
+# Now we will create a main function.
+            
+def main():
+
+    df=load_data("question2_data")                          #Loading the data
+
+    results=average_of_seasons(df)                          #calculating seasonal averages
+    save_seasonal_averages(results)                         #saving seasonal averages
+
+
+    station_largest_ranges=calculate_temperature_ranges(df)     #calculating temperature ranges
+    save_temperature_ranges(station_largest_ranges)              #saving temperature ranges
+
+    most_stable, most_variable= temperature_stability(df)               #calculating stations stability
+    save_temperature_stability(most_stable,most_variable)              #saving stable and variable stations
+
+
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+'''
+REFERENCES
+1) OpenAI. (2024). ChatGPT (GPT-4) [Large language model]. https://chat.openai.com/
+    Used chatgpt to get idea on how to combine multiple csv files into a single dataframe so that we can process all data at once.
+    The large language model provided a way by using the glob module.
+    Then, the glob module was used accordingly.
+
+
+'''
+
+            
+
+            
