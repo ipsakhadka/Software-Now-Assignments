@@ -5,8 +5,9 @@ import pandas as pd
 import numpy as np
 
 
-'''Now, we will create a function to combine all csv files and create a dataframe
-  There is information about 20 different years in 20 separate csv files. We will merge all those csvs in a single dataframe.
+'''
+Now, we will create a function to combine all csv files and create a dataframe
+There is information about 20 different years in 20 separate csv files. We will merge all those csvs in a single dataframe.
 We will use the glob module which makes it easy to find all the pathnames matching a specified pattern, in this case, .csv .
 '''
 
@@ -195,11 +196,16 @@ def temperature_stability(df):
     return most_stable_stations, most_variable_stations
 
 
+#Now we need to save the results to a file
 
+def save_temperature_stability(most_stable, most_variable, filename='question2_results/temperature_stability_stations.txt'):
 
+    with open(filename, 'w') as file:           
+        for station, standard_dev in most_stable:                           #writing most stable to file
+            file.write(f"Most Stable: Station {station}: StdDev {standard_dev:.1f}°C\n")    
 
-
-
-
+        
+        for station, standard_dev in most_variable:                             #writing most variable to file
+            file.write(f"Most Variable: Station {station}: StdDev {standard_dev:.1f}°C\n")
 
 
