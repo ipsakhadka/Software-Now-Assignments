@@ -43,7 +43,7 @@ def draw_shape(pen, sides, length, depth):
     :depth -> recursion depth
     """
     
-    angle = 360 / sides            # it will set the exterior angle of the polygon set
+    angle = 360 / sides            # it will set the exterior angle of the polygon
 
     # Calculate radius of circumscribed circle so shape is centered
     radius = length / (2 * math.sin(math.pi / sides))
