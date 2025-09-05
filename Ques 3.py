@@ -2,18 +2,6 @@ import turtle
 import math     
 
 
-def get_int(prompt, min_val, max_val):
-    while True:
-        try:
-            val = int(input(prompt))
-            if min_val <= val <= max_val:
-                return val
-            print(f"Please enter a number between {min_val} and {max_val}.")
-        except ValueError:
-            print("Invalid input. Please enter an integer.")
-
-
-
 def draw_edge(pen, length, depth):
     
     """
@@ -34,11 +22,11 @@ def draw_edge(pen, length, depth):
 
         # Draw the inward dent (or an equilateral triangle pointing inside)
         #using 60 and 120 because equilateral Triangle and prev values gave weird diagrams for different values too
-        pen.left(60)                       
+        pen.right(60)                       
         draw_edge(pen, part, depth - 1)       
-        pen.right(120)                       
+        pen.left(120)                       
         draw_edge(pen, part, depth - 1)       
-        pen.left(60)                       
+        pen.right(60)                       
 
         # Draw the last third part (which is also straight)
         draw_edge(pen, part, depth - 1)
@@ -111,9 +99,16 @@ def main():
  # Using while loop so user can draw multiple shapes
     while True:
 
-        sides = get_int("Enter the number of sides:", 0,12)      
-        length = get_int("Enter the side length (pixels): ", 50, 700)
-        depth = get_int("Enter the recursion depth: ", 0,5)   
+        try:
+            sides = int(input("Enter the number of sides: "))
+            length = int(input("Enter the side length (pixels): "))
+            depth = int(input("Enter the recursion depth: "))
+
+        except ValueError:
+
+            print("Invalid input! Enter integer values only.")
+            continue
+ 
 
        
         pen.clear()    # clear previous drawing
