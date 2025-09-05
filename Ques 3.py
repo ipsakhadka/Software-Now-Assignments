@@ -71,6 +71,16 @@ def main():
         print("Program stopped.")
         return
     
+     # Now setting up the turtle screen 
+     #doing this outside the loop because it gave error: turtle.terminator
+    screen = turtle.Screen()           
+    screen.title("Python Turtle")    
+    screen.setup(800, 800)             
+    screen.bgcolor("white")           
+
+    pen = turtle.Turtle()              # This creates the turtle (pen)
+    pen.speed(0)                       # This sets up Max drawing speed
+    
     
  # Using while loop so user can draw multiple shapes
     while True:                    
@@ -78,21 +88,19 @@ def main():
         length = int(input("Enter the side length (pixels): ")) 
         depth = int(input("Enter the recursion depth: "))     
 
-        # Now setting up the turtle screen 
-        screen = turtle.Screen()           
-        screen.title("Python Turtle")    
-        screen.setup(800, 800)             
-        screen.bgcolor("white")           
-
-        pen = turtle.Turtle()              # This creates the turtle (pen)
-        pen.speed(0)                       # This sets up Max drawing speed
+       
+        pen.clear()    # clear previous drawing
+        pen.penup()
+        pen.home()     # reset to center
+        pen.pendown()
+        pen.showturtle()
 
         # To draw the geometric shape 
         draw_shape(pen, sides, length, depth)
 
         pen.hideturtle()                   # Hide the turtle cursor
-        screen.mainloop()                  # This keep window open until closed
-
+        # screen.mainloop()                  # This keep window open until closed
+        #This crashed the loop to re-run hence commenting and testing
 
         # # Ask user if they want to build another polygon
                                
