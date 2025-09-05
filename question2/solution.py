@@ -234,6 +234,15 @@ if __name__ == "__main__":
 
 
 
+'''
+REFERENCES
+1) OpenAI. (2024). ChatGPT (GPT-4) [Large language model]. https://chat.openai.com/
+    Used chatgpt to get idea on how to combine multiple csv files into a single dataframe so that we can process all data at once.
+    The large language model provided a way by using the glob module.
+    Then, the glob module was used accordingly.
+
+
+'''
 
             
 
